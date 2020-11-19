@@ -662,7 +662,7 @@ public class DataGeneratorTest
         }
 
         @Override
-        protected void registerAdvancement(Consumer<Advancement> consumer, ExistingFileHelper fileHelper)
+        protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper)
         {
             Advancement.Builder.builder().withDisplay(Items.DIRT,
                     new TranslationTextComponent(Items.DIRT.getTranslationKey()),
@@ -698,6 +698,7 @@ public class DataGeneratorTest
                     .withCriterion("crafting_table", InventoryChangeTrigger.Instance.forItems(Blocks.CRAFTING_TABLE))
                     .register(consumer, new ResourceLocation("story/root"), fileHelper);
 
+            // This should cause an error because of the parent not existing
 /*            Advancement.Builder.builder().withDisplay(Blocks.COBBLESTONE,
                     new TranslationTextComponent(Items.COBBLESTONE.getTranslationKey()),
                     new StringTextComponent("You got cobblestone"),
@@ -708,7 +709,7 @@ public class DataGeneratorTest
                     false)
                     .withCriterion("get_cobbleStone", InventoryChangeTrigger.Instance.forItems(Items.COBBLESTONE))
                     .withParentId(new ResourceLocation("not_there/not_here"))
-                    .register(consumer, "illegalParent");*/
+                    .register(consumer, new ResourceLocation("illegalParent"), fileHelper);*/
 
             Advancement.Builder.builder().withDisplay(Blocks.COBBLESTONE,
                     new TranslationTextComponent(Items.COBBLESTONE.getTranslationKey()),
