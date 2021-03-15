@@ -32,7 +32,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.block.*;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jline.utils.InputStreamReader;
@@ -664,30 +666,30 @@ public class DataGeneratorTest
         @Override
         protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper)
         {
-            Advancement.Builder.builder().withDisplay(Items.DIRT,
-                    new TranslationTextComponent(Items.DIRT.getTranslationKey()),
+            Advancement.Builder.advancement().display(Items.DIRT,
+                    new TranslationTextComponent(Items.DIRT.getDescriptionId()),
                     new TranslationTextComponent("dirt_description"),
                     new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.TASK,
                     true,
                     true,
                     false)
-                    .withCriterion("has_dirt", InventoryChangeTrigger.Instance.forItems(Items.DIRT))
-                    .register(consumer, new ResourceLocation(MODID, "obtain_dirt"), fileHelper);
+                    .addCriterion("has_dirt", InventoryChangeTrigger.Instance.hasItems(Items.DIRT))
+                    .save(consumer, new ResourceLocation(MODID, "obtain_dirt"), fileHelper);
 
-            Advancement.Builder.builder().withDisplay(Items.DIAMOND_BLOCK,
-                    new TranslationTextComponent(Items.DIAMOND_BLOCK.getTranslationKey()),
+            Advancement.Builder.advancement().display(Items.DIAMOND_BLOCK,
+                    new TranslationTextComponent(Items.DIAMOND_BLOCK.getDescriptionId()),
                     new StringTextComponent("You obtained a DiamondBlock"),
                     new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE,
                     true,
                     true,
                     false)
-                    .withCriterion("obtained_diamond_block", InventoryChangeTrigger.Instance.forItems(Items.DIAMOND_BLOCK))
-                    .register(consumer, new ResourceLocation("obtain_diamond_block"), fileHelper);
+                    .addCriterion("obtained_diamond_block", InventoryChangeTrigger.Instance.hasItems(Items.DIAMOND_BLOCK))
+                    .save(consumer, new ResourceLocation("obtain_diamond_block"), fileHelper);
 
-            Advancement.Builder.builder()
-                    .withDisplay(Blocks.GRASS_BLOCK,
+            Advancement.Builder.advancement()
+                    .display(Blocks.GRASS_BLOCK,
                             new TranslationTextComponent("advancements.story.root.title"),
                             new StringTextComponent("Changed Description"),
                             new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
@@ -695,33 +697,33 @@ public class DataGeneratorTest
                             false,
                             false,
                             false)
-                    .withCriterion("crafting_table", InventoryChangeTrigger.Instance.forItems(Blocks.CRAFTING_TABLE))
-                    .register(consumer, new ResourceLocation("story/root"), fileHelper);
+                    .addCriterion("crafting_table", InventoryChangeTrigger.Instance.hasItems(Blocks.CRAFTING_TABLE))
+                    .save(consumer, new ResourceLocation("story/root"), fileHelper);
 
             // This should cause an error because of the parent not existing
-/*            Advancement.Builder.builder().withDisplay(Blocks.COBBLESTONE,
-                    new TranslationTextComponent(Items.COBBLESTONE.getTranslationKey()),
+/*            Advancement.Builder.advancement().display(Blocks.COBBLESTONE,
+                    new TranslationTextComponent(Items.COBBLESTONE.getDescriptionId()),
                     new StringTextComponent("You got cobblestone"),
                     new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.TASK,
                     false,
                     false,
                     false)
-                    .withCriterion("get_cobbleStone", InventoryChangeTrigger.Instance.forItems(Items.COBBLESTONE))
+                    .addCriterion("get_cobbleStone", InventoryChangeTrigger.Instance.hasItems(Items.COBBLESTONE))
                     .withParentId(new ResourceLocation("not_there/not_here"))
-                    .register(consumer, new ResourceLocation("illegalParent"), fileHelper);*/
+                    .save(consumer, new ResourceLocation("illegalParent"), fileHelper);*/
 
-            Advancement.Builder.builder().withDisplay(Blocks.COBBLESTONE,
-                    new TranslationTextComponent(Items.COBBLESTONE.getTranslationKey()),
+            Advancement.Builder.advancement().display(Blocks.COBBLESTONE,
+                    new TranslationTextComponent(Items.COBBLESTONE.getDescriptionId()),
                     new StringTextComponent("You got cobblestone"),
                     new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.TASK,
                     false,
                     false,
                     false)
-                    .withCriterion("get_cobbleStone", InventoryChangeTrigger.Instance.forItems(Items.COBBLESTONE))
-                    .withParentId(new ResourceLocation("forge", "dummy_parent"))
-                    .register(consumer, new ResourceLocation("good_parent"), fileHelper);
+                    .addCriterion("get_cobbleStone", InventoryChangeTrigger.Instance.hasItems(Items.COBBLESTONE))
+                    .parent(new ResourceLocation("forge", "dummy_parent"))
+                    .save(consumer, new ResourceLocation("good_parent"), fileHelper);
         }
     }
 
